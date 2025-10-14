@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veilgate-Synthix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:linear-gradient(135deg,#0d0221 0%,#1a0b2e 50%,#2d1b4e 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+      padding:20px;
+    }
+    #particles{
+      position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;
+    }
+
+    .container{
+      background:rgba(20,12,35,0.7);
+      backdrop-filter:blur(10px);
+      border-radius:25px;
+      padding:35px 25px;
+      width:100%;
+      max-width:380px;
+      box-shadow:0 8px 25px rgba(0,0,0,0.6),
+                 0 0 40px rgba(88,28,135,0.25);
+      border:1px solid rgba(139,92,246,0.2);
+    }
+
+    .page.active{display:block;}
+
+    /* --- Logo Area --- */
+    .logo-container{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      margin-bottom:25px;
+    }
+
+    .logo-wrapper{
+      position:relative;
+      margin-bottom:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .logo-ring{
+      position:absolute;
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,rgba(139,92,246,0.4),transparent 70%);
+      box-shadow:0 0 30px rgba(139,92,246,0.3),
+                 inset 0 0 25px rgba(109,40,217,0.3);
+      filter:blur(2px);
+      animation:pulse 3.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:0.9;}
+      50%{transform:scale(1.1);opacity:0.6;}
+    }
+
+    .logo{
+      width:110px;
+      height:110px;
+      border-radius:50%;
+      background:linear-gradient(145deg,#1a0b2e,#000);
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      border:2px solid rgba(139,92,246,0.4);
+      box-shadow:0 0 25px rgba(139,92,246,0.7),
+                 inset 0 0 25px rgba(109,40,217,0.25);
+      position:relative;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:50%;
+    }
+
+    /* shimmer glow effect */
+    .logo::before{
+      content:"";
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:linear-gradient(45deg,transparent,rgba(167,139,250,0.15),transparent);
+      transform:rotate(25deg);
+      animation:shimmer 4s linear infinite;
+    }
+
+    @keyframes shimmer{
+      0%{transform:translateX(-100%) rotate(25deg);}
+      100%{transform:translateX(100%) rotate(25deg);}
+    }
+
+    h1{
+      text-align:center;
+      background:linear-gradient(90deg,#a78bfa 0%,#8b5cf6 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-size:28px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#9ca3af;
+      font-size:13px;
+      margin-bottom:25px;
+    }
+
+    .input-container{margin-bottom:14px;}
+    .input-field{
+      background:rgba(10,5,20,0.9);
+      border:2px solid rgba(139,92,246,0.35);
+      border-radius:10px;
+      padding:13px 16px;
+      display:flex;align-items:center;gap:10px;
+      transition:border-color 0.3s,box-shadow 0.3s;
+    }
+    .input-field:focus-within{
+      border-color:rgba(139,92,246,0.7);
+      box-shadow:0 0 12px rgba(109,40,217,0.3);
+    }
+    .input-field i{color:#a78bfa;font-size:15px;}
+    .input-field input{
+      background:transparent;
+      border:none;
+      outline:none;
+      color:#d1d5db;
+      font-size:14px;width:100%;
+    }
+
+    .btn{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform 0.2s,box-shadow 0.2s;
+      margin-bottom:12px;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      text-transform:uppercase;
+    }
+    .btn-login{
+      background:linear-gradient(90deg,#a78bfa 0%,#7c3aed 100%);
+      color:#fff;
+    }
+    .btn-login:hover{
+      transform:translateY(-2px);
+      box-shadow:0 5px 15px rgba(124,58,237,0.5);
+    }
+
+    .btn-buy{
+      background:linear-gradient(90deg,#22d3ee 0%,#06b6d4 100%);
+      color:#fff;
+      font-size:15px;
+      border-radius:25px;
+      padding:14px;
+      width:auto;
+      display:inline-flex;
+      margin:0 auto;
+    }
+    .btn-buy:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(6,182,212,0.5);
+    }
+
+    .btn-buy-container{
+      display:flex;
+      justify-content:center;
+      margin-bottom:18px;
+    }
+
+    .footer-text{
+      text-align:center;
+      color:#9ca3af;
+      font-size:13px;
+      margin-top:22px;
+    }
+
+    .toast{
+      position:fixed;
+      top:-150px;
+      left:50%;
+      transform:translateX(-50%);
+      background:linear-gradient(135deg,#1a0b2e 0%,#2d1b4e 100%);
+      border:2px solid;
+      border-radius:15px;
+      padding:18px 28px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.6);
+      z-index:1000;
+      display:flex;align-items:center;gap:14px;
+      min-width:320px;max-width:90%;
+      transition:top 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+
+  <div class="container">
+    <div id="loginPage" class="page active">
+      <div class="logo-container">
+        <div class="logo-wrapper">
+          <div class="logo-ring"></div>
+          <div class="logo">
+            <img src="https://files.catbox.moe/nhegpn.jpg" alt="Profile">
+          </div>
+        </div>
+      </div>
+
+      <h1>Veilgate Synthix</h1>
+      <p class="subtitle">Synthetic Gateway Beyond the Shadows</p>
+
+      <form method="POST" action="/auth">
+        <div class="input-container">
+          <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="text" name="username" placeholder="Username" required />
+          </div>
+        </div>
+
+        <div class="input-container">
+          <div class="input-field">
+            <i class="fas fa-key"></i>
+            <input type="text" name="key" placeholder="Password" required />
+          </div>
+        </div>
+
+        <button class="btn btn-login">
+          <i class="fas fa-sign-in-alt"></i> LOGIN
+        </button>
+
+        <div class="btn-buy-container">
+          <button class="btn btn-buy" onclick="buyKey()">
+            <i class="fas fa-key"></i> Buy Key Access
+          </button>
+        </div>
+
+        <p class="footer-text">© 2025 Powered by - NazarickSpy</p>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" style="display:none;"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jnicol/particleground/jquery.particleground.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      particleground(document.getElementById('particles'),{
+        dotColor:'#b19cd9',
+        lineColor:'#8a2be2',
+        minSpeedX:0.1,maxSpeedX:0.3,
+        minSpeedY:0.1,maxSpeedY:0.3,
+        density:10000,particleRadius:3
+      });
+    },false);
+
+    const params=new URLSearchParams(window.location.search);
+    const msg=params.get("msg");
+    if(msg){
+      const toast=document.getElementById("toast");
+      toast.textContent=msg;
+      toast.style.display="block";
+      toast.style.top="30px";
+    }
+
+    function buyKey(){
+      window.open("https://t.me/nazarickspy","_blank");
+    }
+  </script>
+</body>
+</html>
